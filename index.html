@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Reloj Inteligente</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      transition: background 0.5s, color 0.5s;
+    }
+
+    .dark-mode {
+      background-color: #111;
+      color: #00ff9d;
+    }
+
+    .light-mode {
+      background-color: #f0f0f0;
+      color: #222;
+    }
+
+    #reloj {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    #fecha, #pasos, #clima {
+      font-size: 24px;
+      margin: 5px;
+    }
+
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body class="dark-mode">
+  <div id="reloj">00:00:00</div>
+  <div id="fecha">Hoy es: </div>
+  <div id="pasos">Pasos: 0</div>
+  <div id="clima">Clima: Soleado, 25°C</div>
+  <button onclick="toggleModo()">Cambiar Modo Claro/Oscuro</button>
+
+  <script>
+    function actualizarReloj() {
+      const ahora = new Date();
+      let horas = ahora.getHours();
+      let minutos = ahora.getMinutes();
+      let segundos = ahora.getSeconds();
+
+      horas = horas < 10 ? "0" + horas : horas;
+      minutos = minutos < 10 ? "0" + minutos : minutos;
+      segundos = segundos < 10 ? "0" + segundos : segundos;
+
+      document.getElementById("reloj").textContent = `${horas}:${minutos}:${segundos}`;
+
+      const dias = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+      const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+      const diaSemana = dias[ahora.getDay()];
+      const dia = ahora.getDate();
+      const mes = meses[ahora.getMonth()];
+      const anio = ahora.getFullYear();
+
+      document.getElementById("fecha").textContent = `Hoy es: ${diaSemana}, ${dia} de ${mes} de ${anio}`;
+    }
+
+    function simularPasos() {
+      const pasosActuales = parseInt(document.getElementById("pasos").textContent.replace(/\D/g, ''));
+      const nuevosPasos = pasosActuales + Math.floor(Math.random() * 5); // Simula 0-4 pasos más
+      document.getElementById("pasos").textContent = `Pasos: ${nuevosPasos}`;
+    }
+
+    function toggleModo() {
+      const body = document.body;
+      body.classList.toggle("dark-mode");
+      body.classList.toggle("light-mode");
+    }
+
+    // Actualiza cada segundo
+    setInterval(actualizarReloj, 1000);
+    setInterval(simularPasos, 3000); // Simula pasos cada 3 segundos
+    actualizarReloj();
+  </script>
+</body>
+</html>
